@@ -8,7 +8,6 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -18,7 +17,6 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import zalho.com.br.mypan.model.entities.Product;
 import zalho.com.br.mypan.service.ProductService;
-import zalho.com.br.mypan.service.ProductServiceImpl;
 
 /**
  * Created by andrepereira on 05/06/17.
@@ -39,7 +37,7 @@ public class ProductManager {
 	    });
 
 	    Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.0.12:8090/mypan/rest/")
+                .baseUrl("http://192.168.0.11:8090/mypan/rest/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
 			    .client(builder.build())
