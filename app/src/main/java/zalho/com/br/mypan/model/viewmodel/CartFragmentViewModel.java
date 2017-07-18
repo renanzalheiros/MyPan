@@ -18,7 +18,7 @@ import zalho.com.br.mypan.view.adapter.ProductsListAdapter;
 public class CartFragmentViewModel extends BaseObservable{
 
     public ObservableBoolean emptyList = new ObservableBoolean(false);
-    public ObservableArrayList<Product> cart = new ObservableArrayList<>();
+    public ObservableArrayList<Product> carrinho = new ObservableArrayList<>();
 
     private CartManager manager;
 
@@ -27,22 +27,15 @@ public class CartFragmentViewModel extends BaseObservable{
     }
 
     public void onResume(){
-        Product prod = manager.getCart();
-        if(prod != null){
-            this.cart.add(prod);
-        } else {
-            emptyList.set(true);
-        }
+	    carrinho.clear();
+	    carrinho.addAll(manager.getCart());
     }
 
     @BindingAdapter("itemsCarrinho")
-    public static void bindList(final RecyclerView view, ObservableArrayList<Product> list) {
-        if(list == null){
-            list = new ObservableArrayList<>();
-        }
-        LinearLayoutManager layoutManager = new LinearLayoutManager(view.getContext());
-        view.setLayoutManager(layoutManager);
-        view.setAdapter(new ProductsListAdapter(list));
+    public static void bindList(final RecyclerView view, ObservableArrayList<Product> list){
+	    LinearLayoutManager layoutManager = new LinearLayoutManager(view.getContext());
+	    view.setLayoutManager(layoutManager);
+	    view.setAdapter(new ProductsListAdapter(list));
     }
 
 }

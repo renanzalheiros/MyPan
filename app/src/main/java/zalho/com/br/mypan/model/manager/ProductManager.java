@@ -37,7 +37,7 @@ public class ProductManager {
 	    });
 
 	    Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.0.11:8090/mypan/rest/")
+                .baseUrl("http://192.168.0.12:8090/mypan/rest/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
 			    .client(builder.build())
