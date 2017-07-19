@@ -1,12 +1,13 @@
 package zalho.com.br.mypan.model.entities;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  * Created by andrepereira on 04/06/17.
  */
 
-public class Product {
+public class Product implements Serializable{
 
     private Integer productId;
     private String productName;
@@ -14,6 +15,8 @@ public class Product {
     private BigDecimal productPrice;
     private String productImagePath;
 
+    public Product() {
+    }
 
     public Product(Integer productId, String productName, String productDescription, BigDecimal productPrice, String imagePath) {
         this.productId = productId;

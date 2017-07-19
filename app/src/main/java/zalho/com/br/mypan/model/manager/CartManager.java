@@ -1,11 +1,12 @@
 package zalho.com.br.mypan.model.manager;
 
-import android.content.SharedPreferences;
+import android.content.Context;
 
-import com.google.gson.Gson;
+import com.snappydb.DB;
+import com.snappydb.DBFactory;
+import com.snappydb.SnappydbException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import zalho.com.br.mypan.model.entities.Product;
@@ -16,33 +17,47 @@ import zalho.com.br.mypan.model.entities.Product;
 
 public class CartManager {
 
-    private SharedPreferences sharedPreferences;
 	private List<Product> carrinho = new ArrayList<>();
+	private Context context;
 
-    public CartManager(SharedPreferences cart){
-        this.sharedPreferences = cart;
-        carrinho = getCart();
+	public CartManager(Context context){
+		this.context = context;
+		carrinho = getCart();
+		if(carrinho.size() == 10){
+			try {
+				DB cart = DBFactory.open(context, "Cart");
+				cart.del("carrinho");
+			} catch (SnappydbException e) {
+				e.printStackTrace();
+			}
+		}
     }
 
     public void persistCart(Product order) {
-        SharedPreferences.Editor edit = sharedPreferences.edit();
     	carrinho.add(order);
-        Gson gson = new Gson();
-        String orderJson = gson.toJson(carrinho);
-        edit.putString("cart", orderJson);
-        edit.apply();
-    }
+	    try {
+	    	DB dbNoSql = DBFactory.open(context, "Cart");
+	        Product[] products = carrinho.toArray(new Product[carrinho.size()]);
+		    dbNoSql.put("carrinho", products);
+		    dbNoSql.close();
+	    } catch (SnappydbException e) {
+		    e.printStackTrace();
+	    }
+	}
 
     public List<Product> getCart(){
-        String cart = sharedPreferences.getString("cart", "");
-        Gson gson = new Gson();
-        if(cart.equals("")){
-        	return new ArrayList<>();
-        } else {
-	        List<Product> products = Arrays.asList(gson.fromJson(cart, Product[].class));
-	        return products;
-        }
-
+    	carrinho.clear();
+	    try {
+		    DB dbNoSql = DBFactory.open(context, "Cart");
+		    Product[] carrinhos = dbNoSql.getArray("carrinho", Product.class);
+		    for(Product product : carrinhos){
+		    	carrinho.add(product);
+		    }
+		    dbNoSql.close();
+	    } catch (SnappydbException e) {
+		    e.printStackTrace();
+	    }
+	    return carrinho;
     }
 
 }

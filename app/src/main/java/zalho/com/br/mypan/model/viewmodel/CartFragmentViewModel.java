@@ -33,6 +33,9 @@ public class CartFragmentViewModel extends BaseObservable{
 
     @BindingAdapter("itemsCarrinho")
     public static void bindList(final RecyclerView view, ObservableArrayList<Product> list){
+    	if(list == null){
+    		list = new ObservableArrayList<>();
+	    }
 	    LinearLayoutManager layoutManager = new LinearLayoutManager(view.getContext());
 	    view.setLayoutManager(layoutManager);
 	    view.setAdapter(new ProductsListAdapter(list));

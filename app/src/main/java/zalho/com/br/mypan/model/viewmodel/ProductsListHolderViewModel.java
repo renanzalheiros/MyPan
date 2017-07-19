@@ -44,7 +44,7 @@ public class ProductsListHolderViewModel extends BaseObservable {
 
     public void addToCart(View view){
         Snackbar.make(view, "Adicionado no carrinho com sucess", Snackbar.LENGTH_SHORT).show();
-        CartManager manager = new CartManager(view.getContext().getSharedPreferences("cart", Context.MODE_PRIVATE));
+        CartManager manager = new CartManager(view.getContext());
         manager.persistCart(product);
     }
 

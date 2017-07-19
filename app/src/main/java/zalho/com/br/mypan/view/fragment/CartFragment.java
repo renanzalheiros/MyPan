@@ -28,7 +28,7 @@ public class CartFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         FragmentCartBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cart, container, false);
-        viewModel = new CartFragmentViewModel(new CartManager(getActivity().getSharedPreferences("cart", Context.MODE_PRIVATE)));
+        viewModel = new CartFragmentViewModel(new CartManager(getContext()));
 
         return binding.getRoot();
     }
