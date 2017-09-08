@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
+
+	<data>
+		<variable
+			name="viewModel"
+			type="zalho.com.br.mypan.model.viewmodel.CartListHolderViewModel" />
+	</data>
+
+	<android.support.v7.widget.CardView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_margin="6dp"
+		android:elevation="4dp">
+
+		<android.support.constraint.ConstraintLayout
+			android:id="@+id/lyt_card_products"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:padding="10dp">
+
+			<ImageView
+				android:id="@+id/img_product"
+				android:layout_height="115dp"
+				android:layout_width="95dp"
+				android:layout_marginBottom="8dp"
+				app:productImage="@{viewModel.productImagePath}"
+				app:layout_constraintTop_toTopOf="@id/lyt_card_products"
+				app:layout_constraintBottom_toTopOf="@id/txt_quantidade"
+				app:layout_constraintStart_toStartOf="@id/lyt_card_products"
+				tools:src="@mipmap/ic_launcher"/>
+
+			<TextView
+				android:id="@+id/txt_product_name"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="8dp"
+				android:layout_marginBottom="4dp"
+				app:layout_constraintTop_toTopOf="@id/lyt_card_products"
+				app:layout_constraintStart_toEndOf="@+id/img_product"
+				android:textColor="@android:color/black"
+				android:textSize="20sp"
+				android:text="@{viewModel.productName}"
+				tools:text="Zalhoman" />
+
+			<TextView
+				android:id="@+id/txt_product_description"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="8dp"
+				android:layout_marginTop="4dp"
+				android:layout_marginBottom="8dp"
+				app:layout_constraintTop_toBottomOf="@id/txt_product_name"
+				app:layout_constraintStart_toEndOf="@+id/img_product"
+				app:layout_constraintEnd_toEndOf="@+id/txt_product_price"
+				app:layout_constraintBottom_toTopOf="@id/txt_total"
+				android:textColor="@android:color/black"
+				android:textSize="15sp"
+				android:text="@{viewModel.productDescription}"
+				tools:text="quero 150 caracteres, quero 150 caracteres, quero 150 caracteres, quero 150 caracteres, quero 150 caracteres, quero 150 caracteres, quero 150 caracter" />
+
+			<TextView
+				android:id="@+id/txt_product_price"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				app:layout_constraintTop_toTopOf="@id/lyt_card_products"
+				app:layout_constraintEnd_toEndOf="@id/lyt_card_products"
+				android:text="@{viewModel.productPrice}"
+				tools:text="R$13,96"/>
+
+			<TextView
+				android:id="@+id/txt_total"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				app:layout_constraintTop_toTopOf="@id/txt_add_to_cart"
+				app:layout_constraintBottom_toBottomOf="@id/lyt_card_products"
+				app:layout_constraintEnd_toEndOf="parent"
+				android:textColor="@android:color/black"
+				tools:text="TOTAL: R$27,50"
+				android:textSize="16sp"
+				android:text="@{viewModel.total}" />
+
+			<TextView
+				android:id="@+id/txt_quantidade"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				app:layout_constraintBottom_toBottomOf="@id/lyt_card_products"
+				app:layout_constraintStart_toStartOf="parent"
+				android:textColor="@android:color/black"
+				android:textSize="16sp"
+				tools:text="Quantidade: 2"
+				android:text="@{viewModel.quantidade}"
+				android:onClick="@{viewModel::alteraQuantidade}"/>
+
+		</android.support.constraint.ConstraintLayout>
+	</android.support.v7.widget.CardView>
+
+</layout>

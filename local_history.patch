@@ -1,0 +1,43 @@
+Index: app/src/main/res/layout/fragment_cart.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/fragment_cart.xml	(revision )
++++ app/src/main/res/layout/fragment_cart.xml	(revision )
+@@ -20,19 +20,6 @@
+             app:layout_constraintEnd_toEndOf="parent">
+         </android.support.v7.widget.RecyclerView>
+ 
+-
+-
+-        <TextView
+-            android:layout_width="wrap_content"
+-            android:layout_height="wrap_content"
+-            app:layout_constraintTop_toTopOf="parent"
+-            app:layout_constraintStart_toStartOf="parent"
+-            app:layout_constraintBottom_toBottomOf="parent"
+-            app:layout_constraintEnd_toEndOf="parent"
+-            android:text="Não há produtos"
+-            app:isGone="@{!viewModel.emptyList}"
+-            />
+-
+     </android.support.constraint.ConstraintLayout>
+ 
+ </layout>
+Index: app/src/main/res/layout/adapter_cart_list_row.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/adapter_cart_list_row.xml	(revision )
++++ app/src/main/res/layout/adapter_cart_list_row.xml	(revision )
+@@ -26,7 +26,7 @@
+ 				android:layout_height="115dp"
+ 				android:layout_width="95dp"
+ 				android:layout_marginBottom="8dp"
+-				app:productImage="@{viewModel.getOrderSku().getProductOrder().getProductImagePath()}"
++				app:productImage="@{viewModel.getOrderSku().getProduct().getProductImagePath()}"
+ 				app:layout_constraintTop_toTopOf="@id/lyt_card_products"
+ 				app:layout_constraintBottom_toTopOf="@id/txt_quantidade"
+ 				app:layout_constraintStart_toStartOf="@id/lyt_card_products"

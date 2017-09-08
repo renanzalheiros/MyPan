@@ -1,26 +1,33 @@
 package zalho.com.br.mypan.dao;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
+import android.content.SharedPreferences;
+
+import com.google.gson.Gson;
+import com.snappydb.SnappydbException;
+
+import zalho.com.br.mypan.model.entities.Login;
 
 /**
  * Created by andrepereira on 11/07/17.
  */
 
-public class UserDao extends SQLiteOpenHelper {
+public class UserDao {
 
+	private SharedPreferences sharedPreferences;
 	public UserDao(Context context) {
-		super(context, "usuario", null, 1);
+		sharedPreferences = context.getSharedPreferences("login", Context.MODE_PRIVATE);
 	}
 
-	@Override
-	public void onCreate(SQLiteDatabase db) {
-
+	public Login getUser() {
+		String user = sharedPreferences.getString("user", "");
+		return new Gson().fromJson(user, Login.class);
 	}
 
-	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+	public Login saveUser(Login login) throws SnappydbException {
+		SharedPreferences.Editor edit = sharedPreferences.edit();
+		edit.putString("user", new Gson().toJson(login));
+		edit.apply();
+		return getUser();
 	}
 }

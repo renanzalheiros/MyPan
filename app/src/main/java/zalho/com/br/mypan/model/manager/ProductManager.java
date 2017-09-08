@@ -1,6 +1,9 @@
 package zalho.com.br.mypan.model.manager;
 
+import android.content.Context;
 import android.util.Log;
+
+import com.snappydb.SnappydbException;
 
 import java.io.IOException;
 import java.util.List;
@@ -15,6 +18,7 @@ import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import zalho.com.br.mypan.dao.ProductDao;
 import zalho.com.br.mypan.model.entities.Product;
 import zalho.com.br.mypan.service.ProductService;
 
@@ -25,8 +29,10 @@ import zalho.com.br.mypan.service.ProductService;
 public class ProductManager {
 
     private ProductService service;
+    private final ProductDao productDao;
 
-    public ProductManager(){
+    public ProductManager(Context context) {
+    	productDao = new ProductDao(context);
 	    OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
 	    builder.addInterceptor(new Interceptor() {
 		    @Override
@@ -37,7 +43,7 @@ public class ProductManager {
 	    });
 
 	    Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.0.12:8090/mypan/rest/")
+                .baseUrl("http://192.168.0.15:8000/mypan/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
 			    .client(builder.build())
@@ -48,16 +54,19 @@ public class ProductManager {
 
     public Observable<List<Product>> getProductList(){
         return service.getProductsList()
-		        .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(new Consumer<List<Product>>() {
-                    @Override
-                    public void accept(List<Product> productList) throws Exception {
-                        Log.v("PC", productList.toString());
-                    }
-                });
+	        .observeOn(AndroidSchedulers.mainThread())
+            .doOnNext(productList -> {
+                for(Product product : productList){
+	                Log.v("ZALHO", product.toString());
+                }
+            });
     }
 
-//    public List<Product> getFakeProducts(){
-//        return new ProductServiceImpl().getProducts();
-//    }
+	public boolean updateProductList(List<Product> products) throws SnappydbException {
+		return productDao.saveProducts(products);
+	}
+
+	public Product getProductById(Long productId){
+		return productDao.getProductById(productId);
+	}
 }

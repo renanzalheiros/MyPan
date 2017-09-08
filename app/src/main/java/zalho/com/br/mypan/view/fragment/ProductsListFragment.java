@@ -15,10 +15,12 @@ import android.view.ViewGroup;
 
 import com.facebook.login.LoginManager;
 
+import zalho.com.br.mypan.MypanApplication;
 import zalho.com.br.mypan.R;
 import zalho.com.br.mypan.databinding.FragmentProductsListBinding;
 import zalho.com.br.mypan.model.viewmodel.ProductsListFragmentViewModel;
 import zalho.com.br.mypan.view.activities.LoginActivity;
+import zalho.com.br.mypan.view.activities.MainActivity;
 
 /**
  * Created by andrepereira on 04/06/17.
@@ -28,14 +30,22 @@ public class ProductsListFragment extends Fragment {
 
     private ProductsListFragmentViewModel viewModel;
 
-    @Nullable
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+        viewModel = new ProductsListFragmentViewModel();
+	}
+
+	@Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        viewModel = new ProductsListFragmentViewModel();
         setHasOptionsMenu(true);
+
 
         FragmentProductsListBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_products_list, container, false);
         binding.setViewModel(viewModel);
+
+		((MainActivity)getContext()).getProductComponent().inject(viewModel);
 
         return binding.getRoot();
     }

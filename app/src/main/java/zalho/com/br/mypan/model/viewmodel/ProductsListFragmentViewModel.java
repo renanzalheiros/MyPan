@@ -1,5 +1,6 @@
 package zalho.com.br.mypan.model.viewmodel;
 
+import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.BindingAdapter;
 import android.databinding.ObservableArrayList;
@@ -8,6 +9,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -27,10 +30,10 @@ public class ProductsListFragmentViewModel extends BaseObservable {
     public ObservableBoolean emptyList = new ObservableBoolean(false);
     public ObservableArrayList<Product> products = new ObservableArrayList<>();
 
-    private ProductManager manager;
+    @Inject
+    ProductManager manager;
 
     public ProductsListFragmentViewModel(){
-        manager = new ProductManager();
     }
 
     public void onResume(){
@@ -42,19 +45,15 @@ public class ProductsListFragmentViewModel extends BaseObservable {
 
         manager.getProductList()
 		        .subscribeOn(Schedulers.newThread())
-                .subscribe(new Consumer<List<Product>>() {
-                    @Override
-                    public void accept(List<Product> productList) throws Exception {
-                        loadingListProgress.set(false);
-                        products.addAll(productList);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        loadingListProgress.set(false);
-                        emptyList.set(true);
-                        throwable.printStackTrace();
-                    }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(productList -> {
+                    loadingListProgress.set(false);
+                    manager.updateProductList(productList);
+                    products.addAll(productList);
+                }, throwable -> {
+                    loadingListProgress.set(false);
+                    emptyList.set(true);
+                    throwable.printStackTrace();
                 });
     }
 

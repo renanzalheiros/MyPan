@@ -1,15 +1,22 @@
 package zalho.com.br.mypan.model.manager;
 
+import android.content.Context;
 import android.util.Log;
 
+import com.snappydb.SnappydbException;
+
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import zalho.com.br.mypan.MypanApplication;
+import zalho.com.br.mypan.dao.UserDao;
 import zalho.com.br.mypan.model.entities.Login;
 import zalho.com.br.mypan.service.LoginService;
+import zalho.com.br.mypan.view.activities.LoginActivity;
+import zalho.com.br.mypan.view.activities.MainActivity;
 
 /**
  * Created by andrepereira on 16/07/17.
@@ -18,40 +25,33 @@ import zalho.com.br.mypan.service.LoginService;
 public class LoginManager {
 
 	private LoginService service;
+	private final UserDao userDao;
 
-	public LoginManager(){
+	public LoginManager(Context context) {
+
 		Retrofit retrofit = new Retrofit.Builder()
-				.baseUrl("http://192.168.0.12:8090/mypan/rest/")
+				.baseUrl("http://192.168.0.15:8000/mypan/")
 				.addConverterFactory(GsonConverterFactory.create())
 				.addCallAdapterFactory(RxJava2CallAdapterFactory.create())
 				.build();
 
 		service = retrofit.create(LoginService.class);
+
+		userDao = new UserDao(context);
 	}
 
-	public Login saveNewUser(String userId, String userEmail){
-		final Login user = new Login(userId, userEmail, "");
-		service.saveNewUser(user)
-				.doOnNext(new Consumer<Login>() {
-					@Override
-					public void accept(Login login) throws Exception {
-						Log.v("ZALHOMAN RETROFIT", "Accept doOnNext");
-					}
+	public Observable<Login> checkCredentials(String userEmail){
+		Login user = new Login(null, userEmail, "");
+		return service.saveNewUser(user)
+				.doOnNext(login -> {
+					Log.v("TOKEN LOGIN", login.getToken());
+					Log.v("ZALHOMAN RETROFIT", "Accept doOnNext");
 				})
 				.subscribeOn(Schedulers.newThread())
-				.subscribe(new Consumer<Login>() {
-					@Override
-					public void accept(Login login) throws Exception {
-						user.setToken(login.getToken());
-					}
-				}, new Consumer<Throwable>() {
-					@Override
-					public void accept(Throwable throwable) throws Exception {
-						throwable.printStackTrace();
-						user.setUserId("");
-						user.setUserEmail("");
-					}
-				});
-		return user;
+				.observeOn(AndroidSchedulers.mainThread());
+	}
+
+	public void saveUser(Login login) throws SnappydbException {
+		userDao.saveUser(login);
 	}
 }

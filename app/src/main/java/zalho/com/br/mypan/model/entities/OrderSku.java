@@ -1,28 +1,57 @@
 package zalho.com.br.mypan.model.entities;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  * Created by andrepereira on 26/06/17.
  */
 
-public class OrderSku {
+public class OrderSku implements Serializable{
 
-    private final Sku orderSku;
-    private final int skuQuantity;
-    private BigDecimal orderPrice;
+	private long orderSkuId;
+	private Long productId;
+	private int quantity;
+	private BigDecimal skuPrice;
 
-    public OrderSku(Sku orderSku, int skuQuantity) {
-        this.orderSku = orderSku;
-        this.skuQuantity = skuQuantity;
-        orderPrice = orderSku.getSkuPrice().multiply(BigDecimal.valueOf(skuQuantity));
-    }
+	public OrderSku() {
+	}
 
-    public Sku getOrderSku() {
-        return orderSku;
-    }
+	public OrderSku(Product product, int quantity) {
+		this.quantity = quantity;
+		this.productId = product.getId();
+		this.skuPrice = product.getPrice();
+	}
 
-    public int getSkuQuantity() {
-        return skuQuantity;
-    }
+	public long getOrderSkuId() {
+		return orderSkuId;
+	}
+
+	public void setOrderSkuId(long orderSkuId) {
+		this.orderSkuId = orderSkuId;
+	}
+
+	public Long getProductId() {
+		return productId;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public BigDecimal getSkuPrice() {
+		return skuPrice;
+	}
+
+	public void setSkuPrice(BigDecimal skuPrice) {
+		this.skuPrice = skuPrice;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	public BigDecimal getOrderSkuPrice(){
+		return skuPrice.multiply(BigDecimal.valueOf(quantity));
+	}
 }

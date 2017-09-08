@@ -7,55 +7,55 @@ import java.math.BigDecimal;
  * Created by andrepereira on 04/06/17.
  */
 
-public class Product implements Serializable{
+public class Product implements Serializable {
 
-    private Integer productId;
-    private String productName;
-    private String productDescription;
-    private BigDecimal productPrice;
+    private long id;
+    private String name;
+    private String description;
+    private BigDecimal price;
     private String productImagePath;
 
     public Product() {
     }
 
-    public Product(Integer productId, String productName, String productDescription, BigDecimal productPrice, String imagePath) {
-        this.productId = productId;
-        this.productName = productName;
-        this.productDescription = productDescription;
-        this.productPrice = productPrice;
+    public Product(Long id, String name, String description, BigDecimal price, String imagePath) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
         this.productImagePath = imagePath;
     }
 
-    public Integer getProductId() {
-        return productId;
+    public Long getId() {
+        return id;
     }
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getName() {
+        return name;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getProductDescription() {
-        return productDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setProductDescription(String productDescription) {
-        this.productDescription = productDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public BigDecimal getProductPrice() {
-        return productPrice;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setProductPrice(BigDecimal productPrice) {
-        this.productPrice = productPrice;
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public String getProductImagePath() {
@@ -64,5 +64,10 @@ public class Product implements Serializable{
 
     public void setProductImagePath(String productImagePath) {
         this.productImagePath = productImagePath;
+    }
+
+    @Override
+    public String toString() {
+        return this.getName() + " " + this.getDescription() + " " + this.getPrice();
     }
 }
