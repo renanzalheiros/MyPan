@@ -3,6 +3,7 @@ package zalho.com.br.mypan.model.entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by andrepereira on 26/06/17.
@@ -10,9 +11,9 @@ import java.util.List;
 
 public class BuyOrder implements Serializable {
 
-    private int id;
+    private String id;
     private List<OrderSku> orderSkuList;
-    private Integer userId;
+    private String userId;
 
     public BuyOrder() {
         this.orderSkuList = new ArrayList<OrderSku>();
@@ -30,19 +31,19 @@ public class BuyOrder implements Serializable {
 		this.orderSkuList = orderProductList;
 	}
 
-	public int getId() {
+	public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Integer getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 }

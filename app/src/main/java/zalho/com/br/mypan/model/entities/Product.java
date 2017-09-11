@@ -2,6 +2,7 @@ package zalho.com.br.mypan.model.entities;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 /**
  * Created by andrepereira on 04/06/17.
@@ -9,7 +10,7 @@ import java.math.BigDecimal;
 
 public class Product implements Serializable {
 
-    private long id;
+    private String id;
     private String name;
     private String description;
     private BigDecimal price;
@@ -18,7 +19,7 @@ public class Product implements Serializable {
     public Product() {
     }
 
-    public Product(Long id, String name, String description, BigDecimal price, String imagePath) {
+    public Product(String id, String name, String description, BigDecimal price, String imagePath) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -26,11 +27,11 @@ public class Product implements Serializable {
         this.productImagePath = imagePath;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

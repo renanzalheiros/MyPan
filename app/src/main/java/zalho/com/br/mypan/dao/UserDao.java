@@ -24,7 +24,7 @@ public class UserDao {
 		return new Gson().fromJson(user, Login.class);
 	}
 
-	public Login saveUser(Login login) throws SnappydbException {
+	public Login saveUser(Login login) {
 		SharedPreferences.Editor edit = sharedPreferences.edit();
 		edit.putString("user", new Gson().toJson(login));
 		edit.apply();

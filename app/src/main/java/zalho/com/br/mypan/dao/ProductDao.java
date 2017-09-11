@@ -22,7 +22,7 @@ public class ProductDao {
 	    sharedPreferences = context.getSharedPreferences("products", Context.MODE_PRIVATE);
     }
 
-    public List<Product> getAllProducts() throws SnappydbException {
+    public List<Product> getAllProducts() {
 	    String products = sharedPreferences.getString("products", "");
 	    Product[] product = new Gson().fromJson(products, Product[].class);
 	    if(product != null) {
@@ -31,26 +31,23 @@ public class ProductDao {
 	    return null;
     }
 
-    public boolean saveProducts(List<Product> products) throws SnappydbException {
+    public boolean saveProducts(List<Product> products) {
 	    SharedPreferences.Editor edit = sharedPreferences.edit();
 	    edit.putString("products", new Gson().toJson(products.toArray(new Product[products.size()])));
 	    edit.apply();
 	    return true;
     }
 
-    public Product getProductById(Long id) {
-	    try {
-		    List<Product> allProducts = getAllProducts();
+    public Product getProductById(String id) {
+	    List<Product> allProducts = getAllProducts();
+	    if(allProducts != null) {
 		    for(Product product : allProducts) {
-		    	if(product.getId() == id) {
-		    		return product;
+		        if(product.getId().equals(id)) {
+		            return product;
 			    }
 		    }
-		    return null;
-	    } catch (SnappydbException e) {
-		    e.printStackTrace();
-		    return null;
 	    }
+	    return null;
     }
 
     public List<Product> clearProducts() throws SnappydbException {

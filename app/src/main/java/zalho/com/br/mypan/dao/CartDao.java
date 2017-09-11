@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import zalho.com.br.mypan.model.entities.BuyOrder;
 import zalho.com.br.mypan.model.entities.OrderSku;
 import zalho.com.br.mypan.view.activities.MainActivity;
 
@@ -19,23 +20,21 @@ import zalho.com.br.mypan.view.activities.MainActivity;
 
 public class CartDao {
 
-	private final Context context;
 	private final SharedPreferences sharedPreferences;
 	public CartDao(Context context) {
 		sharedPreferences = context.getSharedPreferences("cart", Context.MODE_PRIVATE);
-		this.context = context;
 	}
 
-	public List<OrderSku> getCart() throws SnappydbException {
+	public List<OrderSku> getCart() {
 		String cart = sharedPreferences.getString("mycart", "");
 		OrderSku[] orderSkus = new Gson().fromJson(cart, OrderSku[].class);
 		if(orderSkus != null) {
-			return Arrays.asList(orderSkus);
+			return new ArrayList<>(Arrays.asList(orderSkus));
 		}
 		return new ArrayList<>();
 	}
 
-	public boolean persistCart(List<OrderSku> cart) throws SnappydbException {
+	public boolean persistCart(List<OrderSku> cart) {
 		SharedPreferences.Editor edit = sharedPreferences.edit();
 		String s = new Gson().toJson(cart.toArray(new OrderSku[cart.size()]));
 		edit.putString("mycart", s);
@@ -43,7 +42,10 @@ public class CartDao {
 		return true;
 	}
 
-	public boolean clearCart() throws SnappydbException {
-		return false;
+	public void persistBuyOrder(BuyOrder buyOrder) {
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		String s = new Gson().toJson(buyOrder);
+		editor.putString("buyOrder", s);
+		editor.apply();
 	}
 }

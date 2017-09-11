@@ -15,6 +15,7 @@ import zalho.com.br.mypan.MypanApplication;
 import zalho.com.br.mypan.dao.UserDao;
 import zalho.com.br.mypan.model.entities.Login;
 import zalho.com.br.mypan.service.LoginService;
+import zalho.com.br.mypan.util.Constantes;
 import zalho.com.br.mypan.view.activities.LoginActivity;
 import zalho.com.br.mypan.view.activities.MainActivity;
 
@@ -30,7 +31,7 @@ public class LoginManager {
 	public LoginManager(Context context) {
 
 		Retrofit retrofit = new Retrofit.Builder()
-				.baseUrl("http://192.168.0.15:8000/mypan/")
+				.baseUrl(Constantes.LOCALHOST_BASE_URL)
 				.addConverterFactory(GsonConverterFactory.create())
 				.addCallAdapterFactory(RxJava2CallAdapterFactory.create())
 				.build();
@@ -51,7 +52,7 @@ public class LoginManager {
 				.observeOn(AndroidSchedulers.mainThread());
 	}
 
-	public void saveUser(Login login) throws SnappydbException {
+	public void saveUser(Login login) {
 		userDao.saveUser(login);
 	}
 }

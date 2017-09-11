@@ -1,6 +1,7 @@
 package zalho.com.br.mypan.model.entities;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 /**
  * Created by andrepereira on 16/07/17.
@@ -8,24 +9,24 @@ import java.io.Serializable;
 
 public class Login implements Serializable {
 
-	private Integer id;
+	private String id;
 	private String email;
 	private String token;
 
 	public Login() {
 	}
 
-	public Login(Integer id, String email, String token) {
+	public Login(String id, String email, String token) {
 		this.id = id;
 		this.email = email;
 		this.token = token;
 	}
 
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

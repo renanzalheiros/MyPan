@@ -89,12 +89,7 @@ public class LoginActivity extends AppCompatActivity{
 										user.setEmail(login.getEmail());
 										user.setToken(login.getToken());
 
-										String s = new Gson().toJson(user);
-										editor = shared.edit();
-										editor.putString("user", s);
-										editor.putLong("lastLogin", new Date().getTime());
-										editor.apply();
-
+										manager.saveUser(user);
 										goToMainActivity();
 									}, throwable -> {
 										throwable.printStackTrace();

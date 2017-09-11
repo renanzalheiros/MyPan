@@ -19,8 +19,10 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import zalho.com.br.mypan.dao.ProductDao;
+import zalho.com.br.mypan.dao.UserDao;
 import zalho.com.br.mypan.model.entities.Product;
 import zalho.com.br.mypan.service.ProductService;
+import zalho.com.br.mypan.util.Constantes;
 
 /**
  * Created by andrepereira on 05/06/17.
@@ -30,20 +32,22 @@ public class ProductManager {
 
     private ProductService service;
     private final ProductDao productDao;
+    private final UserDao userDao;
 
     public ProductManager(Context context) {
     	productDao = new ProductDao(context);
+    	userDao = new UserDao(context);
 	    OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
 	    builder.addInterceptor(new Interceptor() {
 		    @Override
 		    public Response intercept(Chain chain) throws IOException {
-			    Request request = chain.request().newBuilder().addHeader("user-auth", "zalho").build();
+			    Request request = chain.request().newBuilder().addHeader("user-auth", userDao.getUser().getToken()).build();
 			    return chain.proceed(request);
 		    }
 	    });
 
 	    Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.0.15:8000/mypan/")
+                .baseUrl(Constantes.LOCALHOST_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
 			    .client(builder.build())
@@ -66,7 +70,7 @@ public class ProductManager {
 		return productDao.saveProducts(products);
 	}
 
-	public Product getProductById(Long productId){
+	public Product getProductById(String productId){
 		return productDao.getProductById(productId);
 	}
 }

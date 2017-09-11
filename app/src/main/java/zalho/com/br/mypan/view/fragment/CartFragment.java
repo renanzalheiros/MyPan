@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,9 +15,12 @@ import android.view.ViewGroup;
 
 import com.snappydb.SnappydbException;
 
+import io.reactivex.functions.Consumer;
 import zalho.com.br.mypan.MypanApplication;
 import zalho.com.br.mypan.R;
 import zalho.com.br.mypan.databinding.FragmentCartBinding;
+import zalho.com.br.mypan.model.entities.BuyOrder;
+import zalho.com.br.mypan.model.manager.CartManager;
 import zalho.com.br.mypan.model.viewmodel.CartFragmentViewModel;
 import zalho.com.br.mypan.view.activities.MainActivity;
 
@@ -55,13 +59,7 @@ public class CartFragment extends Fragment {
 
     @Override
     public void onResume() {
-	    try {
-		    viewModel.onResume();
-	    } catch (SnappydbException e) {
-		    e.printStackTrace();
-		    Snackbar snackbar = Snackbar.make(getView(), "Erro ao carregar carrinho", Snackbar.LENGTH_LONG);
-		    snackbar.show();
-	    }
+	    viewModel.onResume();
 	    super.onResume();
     }
 
@@ -74,13 +72,18 @@ public class CartFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getTitle().equals("Comprar")){
-            try {
-                viewModel.getManager().sendOrder();
-            } catch (SnappydbException e) {
-                e.printStackTrace();
-                Snackbar snackbar = Snackbar.make(getView(), "Erro ao executar compra!", Snackbar.LENGTH_LONG);
-                snackbar.show();
-            }
+	        CartManager manager = viewModel.getManager();
+	        manager.sendOrder()
+            .subscribe(
+		            orderService -> { Log.v("BUY ORDER", orderService.toString());
+		                manager.saveBuyOrder(orderService);
+		                viewModel.newOrder();
+		            } ,
+		            throwable -> {
+			            throwable.printStackTrace();
+			            Snackbar snackbar = Snackbar.make(getView(), "Não foi possível enviar seu carrinho", Snackbar.LENGTH_LONG);
+			            snackbar.show();
+		            });
         }
         return super.onOptionsItemSelected(item);
     }

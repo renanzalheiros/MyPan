@@ -56,12 +56,7 @@ public class ProductsListHolderViewModel extends BaseObservable {
 			    .withSingleLineEdit()
 			    .withNegativeAction("Cancelar", (dialog, which) -> dialog.dismiss());
 	    myPanDialog.withPositiveAction("Confirmar", (dialog, which) -> {
-            try {
-                cartManager.persistCart(new OrderSku(product, Integer.parseInt(myPanDialog.getTypedText())));
-            } catch (SnappydbException e) {
-                e.printStackTrace();
-
-            }
+            cartManager.persistCart(new OrderSku(product, Integer.parseInt(myPanDialog.getTypedText())));
         });
 
 	    myPanDialog.show();

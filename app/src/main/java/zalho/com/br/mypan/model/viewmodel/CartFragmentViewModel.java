@@ -36,7 +36,7 @@ public class CartFragmentViewModel extends BaseObservable{
 		return manager;
 	}
 
-	public void onResume() throws SnappydbException {
+	public void onResume() {
 		carrinho.clear();
 		carrinho.addAll(manager.getMyCart());
 		if(carrinho.size() <= 0){
@@ -53,4 +53,10 @@ public class CartFragmentViewModel extends BaseObservable{
 		view.setAdapter(new CartListAdapter(list));
 	}
 
+	public void newOrder() {
+		if (manager.clearCart()) {
+			carrinho.clear();
+			onResume();
+		}
+	}
 }
