@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -19,14 +17,11 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
 import java.util.Arrays;
-import java.util.Date;
 
-import zalho.com.br.mypan.MypanApplication;
 import zalho.com.br.mypan.R;
 import zalho.com.br.mypan.model.entities.Login;
 import zalho.com.br.mypan.model.manager.LoginManager;

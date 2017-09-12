@@ -1,18 +1,18 @@
 package zalho.com.br.mypan.dao;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
+import com.snappydb.DB;
+import com.snappydb.DBFactory;
+import com.snappydb.SnappyDB;
 import com.snappydb.SnappydbException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import zalho.com.br.mypan.model.entities.BuyOrder;
 import zalho.com.br.mypan.model.entities.OrderSku;
-import zalho.com.br.mypan.view.activities.MainActivity;
 
 /**
  * Created by andrepereira on 01/09/17.
@@ -20,32 +20,38 @@ import zalho.com.br.mypan.view.activities.MainActivity;
 
 public class CartDao {
 
-	private final SharedPreferences sharedPreferences;
+	private final Context context;
+
 	public CartDao(Context context) {
-		sharedPreferences = context.getSharedPreferences("cart", Context.MODE_PRIVATE);
+		this.context = context;
 	}
 
 	public List<OrderSku> getCart() {
-		String cart = sharedPreferences.getString("mycart", "");
-		OrderSku[] orderSkus = new Gson().fromJson(cart, OrderSku[].class);
-		if(orderSkus != null) {
-			return new ArrayList<>(Arrays.asList(orderSkus));
+		try {
+			DB snappyDB = DBFactory.open(context, "Cart");
+			String mycart = snappyDB.get("mycart");
+			OrderSku[] orderSkus = new Gson().fromJson(mycart, OrderSku[].class);
+			if(orderSkus != null) {
+				return new ArrayList<>(Arrays.asList(orderSkus));
+			}
+			snappyDB.close();
+			return new ArrayList<>();
+		} catch (SnappydbException e) {
+			e.printStackTrace();
+			return new ArrayList<>();
 		}
-		return new ArrayList<>();
 	}
 
 	public boolean persistCart(List<OrderSku> cart) {
-		SharedPreferences.Editor edit = sharedPreferences.edit();
 		String s = new Gson().toJson(cart.toArray(new OrderSku[cart.size()]));
-		edit.putString("mycart", s);
-		edit.apply();
-		return true;
-	}
-
-	public void persistBuyOrder(BuyOrder buyOrder) {
-		SharedPreferences.Editor editor = sharedPreferences.edit();
-		String s = new Gson().toJson(buyOrder);
-		editor.putString("buyOrder", s);
-		editor.apply();
+		try {
+			DB snappyDB = DBFactory.open(context, "Cart");
+			snappyDB.put("mycart", s);
+			snappyDB.close();
+			return true;
+		} catch (SnappydbException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 }

@@ -3,21 +3,16 @@ package zalho.com.br.mypan.model.manager;
 import android.content.Context;
 import android.util.Log;
 
-import com.snappydb.SnappydbException;
-
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import zalho.com.br.mypan.MypanApplication;
 import zalho.com.br.mypan.dao.UserDao;
 import zalho.com.br.mypan.model.entities.Login;
 import zalho.com.br.mypan.service.LoginService;
 import zalho.com.br.mypan.util.Constantes;
-import zalho.com.br.mypan.view.activities.LoginActivity;
-import zalho.com.br.mypan.view.activities.MainActivity;
 
 /**
  * Created by andrepereira on 16/07/17.

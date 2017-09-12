@@ -33,19 +33,17 @@ public class ProductsListFragment extends Fragment {
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        viewModel = new ProductsListFragmentViewModel();
 	}
 
 	@Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+        viewModel = new ProductsListFragmentViewModel(getContext());
 
 
         FragmentProductsListBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_products_list, container, false);
         binding.setViewModel(viewModel);
-
-		((MainActivity)getContext()).getProductComponent().inject(viewModel);
 
         return binding.getRoot();
     }

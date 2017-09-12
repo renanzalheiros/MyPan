@@ -30,10 +30,10 @@ public class ProductsListFragmentViewModel extends BaseObservable {
     public ObservableBoolean emptyList = new ObservableBoolean(false);
     public ObservableArrayList<Product> products = new ObservableArrayList<>();
 
-    @Inject
-    ProductManager manager;
+    private ProductManager manager;
 
-    public ProductsListFragmentViewModel(){
+    public ProductsListFragmentViewModel(Context context){
+        this.manager = new ProductManager(context);
     }
 
     public void onResume(){

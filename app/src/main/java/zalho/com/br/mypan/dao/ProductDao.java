@@ -1,11 +1,13 @@
 package zalho.com.br.mypan.dao;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
+import com.snappydb.DB;
+import com.snappydb.DBFactory;
 import com.snappydb.SnappydbException;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,41 +19,70 @@ import zalho.com.br.mypan.model.entities.Product;
 
 public class ProductDao {
 
-	private SharedPreferences sharedPreferences;
+	private final Context context;
     public ProductDao(Context context) {
-	    sharedPreferences = context.getSharedPreferences("products", Context.MODE_PRIVATE);
+	    this.context = context;
     }
 
     public List<Product> getAllProducts() {
-	    String products = sharedPreferences.getString("products", "");
-	    Product[] product = new Gson().fromJson(products, Product[].class);
-	    if(product != null) {
-		    return Arrays.asList(product);
+	    try {
+		    DB snappyDB = DBFactory.open(context, "Products");
+		    String products = snappyDB.get("products");
+		    snappyDB.close();
+
+		    Product[] product = new Gson().fromJson(products, Product[].class);
+		    if(product != null) {
+			    return Arrays.asList(product);
+		    }
+		    return null;
+	    } catch (SnappydbException e) {
+		    e.printStackTrace();
+		    return null;
 	    }
-	    return null;
     }
 
     public boolean saveProducts(List<Product> products) {
-	    SharedPreferences.Editor edit = sharedPreferences.edit();
-	    edit.putString("products", new Gson().toJson(products.toArray(new Product[products.size()])));
-	    edit.apply();
-	    return true;
+	    try {
+		    DB snappyDB = DBFactory.open(context, "Products");
+		    snappyDB.put("products", new Gson().toJson(products.toArray(new Product[products.size()])));
+		    snappyDB.close();
+		    return true;
+	    } catch (SnappydbException e) {
+		    e.printStackTrace();
+		    return false;
+	    }
     }
 
     public Product getProductById(String id) {
-	    List<Product> allProducts = getAllProducts();
-	    if(allProducts != null) {
+	    List<Product> allProducts;
+	    try {
+		    DB snappyDB = DBFactory.open(context, "Products");
+		    String produto = snappyDB.get("products");
+		    snappyDB.close();
+		    Product[] products = new Gson().fromJson(produto, Product[].class);
+		    allProducts = new ArrayList<>(Arrays.asList(products));
 		    for(Product product : allProducts) {
 		        if(product.getId().equals(id)) {
 		            return product;
 			    }
 		    }
+		    return null;
+	    } catch (SnappydbException e) {
+		    e.printStackTrace();
+		    return null;
 	    }
-	    return null;
     }
 
-    public List<Product> clearProducts() throws SnappydbException {
-	    return null;
+    public List<Product> clearProducts() {
+	    try {
+		    DB snappyDB = DBFactory.open(context, "Products");
+		    snappyDB.del("products");
+	        snappyDB.close();
+	        return getAllProducts();
+	    } catch (SnappydbException e) {
+		    e.printStackTrace();
+		    return null;
+	    }
     }
 
 

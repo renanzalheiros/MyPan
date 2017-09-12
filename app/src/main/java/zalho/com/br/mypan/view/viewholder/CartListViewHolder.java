@@ -14,19 +14,16 @@ import zalho.com.br.mypan.model.viewmodel.CartListHolderViewModel;
 public class CartListViewHolder extends RecyclerView.ViewHolder {
 
 	private final AdapterCartListRowBinding binding;
-	private final Context context;
 
 	public CartListViewHolder(AdapterCartListRowBinding binding) {
 		super(binding.getRoot());
-
-		this.context = binding.getRoot().getContext();
 
 		this.binding = binding;
 	}
 
 	public void bindData(OrderSku orderSku){
 		if (binding.getViewModel() == null) {
-			CartListHolderViewModel viewModel = new CartListHolderViewModel(orderSku, context);
+			CartListHolderViewModel viewModel = new CartListHolderViewModel(orderSku);
 			binding.setViewModel(viewModel);
 		} else {
 			binding.getViewModel().setOrderSku(orderSku);

@@ -3,27 +3,25 @@ package zalho.com.br.mypan.model.manager;
 import android.content.Context;
 import android.util.Log;
 
-import com.google.gson.Gson;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 import zalho.com.br.mypan.dao.CartDao;
 import zalho.com.br.mypan.dao.UserDao;
+import zalho.com.br.mypan.events.OrderSkuEvent;
+import zalho.com.br.mypan.events.RefreshDisplayEvent;
 import zalho.com.br.mypan.model.entities.BuyOrder;
 import zalho.com.br.mypan.model.entities.Login;
 import zalho.com.br.mypan.model.entities.OrderSku;
+import zalho.com.br.mypan.model.entities.Product;
 import zalho.com.br.mypan.service.CartService;
-import zalho.com.br.mypan.util.Constantes;
+import zalho.com.br.mypan.service.ServiceGenerate;
 
 /**
  * Created by andrepereira on 26/06/17.
@@ -38,50 +36,33 @@ public class CartManager {
 	private List<OrderSku> order;
 
 	public CartManager(Context context){
+		EventBus.getDefault().register(this);
+
 		this.userDao = new UserDao(context);
 		this.cartDao = new CartDao(context);
+		Login user = userDao.getUser();
 		order = new ArrayList<>();
 		order = getMyCart();
 
-		Login user = new Gson().fromJson(context.getSharedPreferences("login", Context.MODE_PRIVATE).getString("user", ""), Login.class);
-
-		if(user != null && user.getToken() == null){
-			final String token = "";
-		}
-		final String token = user.getToken();
-
-
-		OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
-		builder.connectTimeout(120, TimeUnit.SECONDS).readTimeout(120, TimeUnit.SECONDS).writeTimeout(120, TimeUnit.SECONDS);
-		builder.addInterceptor(chain -> {
-			Request request = chain.request().newBuilder().addHeader("user-auth", token).build();
-			return chain.proceed(request);
-		});
-
-		Retrofit retrofit = new Retrofit.Builder()
-				.baseUrl(Constantes.LOCALHOST_BASE_URL)
-				.addConverterFactory(GsonConverterFactory.create())
-				.addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-				.client(builder.build())
-				.build();
-
-		service = retrofit.create(CartService.class);
+		service = ServiceGenerate.createService(CartService.class, user);
 	}
 
-	public void persistCart(OrderSku orderSku) {
-		OrderSku sku = searchForProduct(orderSku.getProductId());
+	@Subscribe
+	public void persistCart(OrderSkuEvent event) {
+		OrderSku sku = searchForProduct(event.getOrderSku().getProduct());
 		if (sku != null) {
-			sku.setQuantity(sku.getQuantity() + orderSku.getQuantity());
+			sku.setQuantity(sku.getQuantity() + event.getOrderSku().getQuantity());
 			cartDao.persistCart(order);
 		} else {
-			order.add(orderSku);
+			order.add(event.getOrderSku());
 			cartDao.persistCart(order);
 		}
+		EventBus.getDefault().post(new RefreshDisplayEvent());
 	}
 
-	private OrderSku searchForProduct(String productId){
+	private OrderSku searchForProduct(Product product){
 		for(OrderSku sku : order) {
-			if (sku.getProductId().equals(productId)) {
+			if (sku.getProduct().getId().equals(product.getId())) {
 				return sku;
 			}
 		}
@@ -101,7 +82,7 @@ public class CartManager {
 
 		if(user != null){
 			BuyOrder buyOrder = new BuyOrder();
-			buyOrder.setUserId(user.getId());
+			buyOrder.setUser(user);
 			buyOrder.setOrderProductList(order);
 			return service.makeNewOrder(buyOrder)
 					.subscribeOn(Schedulers.io())
@@ -111,10 +92,6 @@ public class CartManager {
 		} else {
 	    	throw new RuntimeException("Não foi possível enviar seu pedido");
 		}
-	}
-
-	public void saveBuyOrder(BuyOrder buyOrder) {
-		cartDao.persistBuyOrder(buyOrder);
 	}
 
 	public boolean clearCart() {

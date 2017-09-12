@@ -8,12 +8,12 @@ import java.util.UUID;
  * Created by andrepereira on 26/06/17.
  */
 
-public class OrderSku implements Serializable{
+public class OrderSku implements Serializable {
 
 	private String orderSkuId;
-	private String productId;
+	private Product product;
 	private int quantity;
-	private BigDecimal skuPrice;
+	private BigDecimal orderSkuPrice;
 
 	public OrderSku() {
 		this.orderSkuId = UUID.randomUUID().toString();
@@ -21,32 +21,15 @@ public class OrderSku implements Serializable{
 
 	public OrderSku(Product product, int quantity) {
 		this.quantity = quantity;
-		this.productId = product.getId();
-		this.skuPrice = product.getPrice();
+		this.product = product;
 	}
 
-	public String getOrderSkuId() {
-		return orderSkuId;
-	}
-
-	public void setOrderSkuId(String orderSkuId) {
-		this.orderSkuId = orderSkuId;
-	}
-
-	public String getProductId() {
-		return productId;
+	public Product getProduct() {
+		return product;
 	}
 
 	public int getQuantity() {
 		return quantity;
-	}
-
-	public BigDecimal getSkuPrice() {
-		return skuPrice;
-	}
-
-	public void setSkuPrice(BigDecimal skuPrice) {
-		this.skuPrice = skuPrice;
 	}
 
 	public void setQuantity(int quantity) {
@@ -54,6 +37,7 @@ public class OrderSku implements Serializable{
 	}
 
 	public BigDecimal getOrderSkuPrice(){
-		return skuPrice.multiply(BigDecimal.valueOf(quantity));
+		this.orderSkuPrice = product.getPrice().multiply(BigDecimal.valueOf(quantity));
+		return orderSkuPrice;
 	}
 }

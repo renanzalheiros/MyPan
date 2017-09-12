@@ -26,9 +26,7 @@ public class ProductListViewHolder extends RecyclerView.ViewHolder{
 
     public void bindData(Product product){
         if (binding.getViewModel() == null) {
-            ProductsListHolderViewModel productsListHolderViewModel = new ProductsListHolderViewModel(product);
-
-	        ((MainActivity) context).getCartComponent().inject(productsListHolderViewModel);
+            ProductsListHolderViewModel productsListHolderViewModel = new ProductsListHolderViewModel(product, context);
 
             binding.setViewModel(productsListHolderViewModel);
         } else {

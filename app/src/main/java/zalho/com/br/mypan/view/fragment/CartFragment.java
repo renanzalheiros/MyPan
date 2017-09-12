@@ -43,12 +43,10 @@ public class CartFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         setHasOptionsMenu(true);
 
-        viewModel = new CartFragmentViewModel();
+        viewModel = new CartFragmentViewModel(getContext());
 
 	    FragmentCartBinding inflate = DataBindingUtil.inflate(inflater, R.layout.fragment_cart, container, false);
 	    inflate.setViewModel(viewModel);
-
-	    ((MainActivity) getContext()).getCartComponent().inject(viewModel);
 
         return inflate.getRoot();
     }
@@ -76,7 +74,6 @@ public class CartFragment extends Fragment {
 	        manager.sendOrder()
             .subscribe(
 		            orderService -> { Log.v("BUY ORDER", orderService.toString());
-		                manager.saveBuyOrder(orderService);
 		                viewModel.newOrder();
 		            } ,
 		            throwable -> {
