@@ -1,5 +1,6 @@
 package zalho.com.br.mypan.view.fragment;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,13 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.snappydb.SnappydbException;
-
-import io.reactivex.functions.Consumer;
-import zalho.com.br.mypan.MypanApplication;
 import zalho.com.br.mypan.R;
 import zalho.com.br.mypan.databinding.FragmentCartBinding;
-import zalho.com.br.mypan.model.entities.BuyOrder;
 import zalho.com.br.mypan.model.manager.CartManager;
 import zalho.com.br.mypan.model.viewmodel.CartFragmentViewModel;
 import zalho.com.br.mypan.view.activities.MainActivity;
@@ -37,7 +33,17 @@ public class CartFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    @Nullable
+	@Override
+	public void onAttach(Context context) {
+		super.onAttach(context);
+	}
+
+	@Override
+	public void onDetach() {
+		super.onDetach();
+	}
+
+	@Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -65,11 +71,12 @@ public class CartFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         menu.add("Comprar");
+        menu.add("Histórico de Compras");
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getTitle().equals("Comprar")){
+        if(item.getTitle().equals("Comprar")) {
 	        CartManager manager = viewModel.getManager();
 	        manager.sendOrder()
             .subscribe(
@@ -81,6 +88,9 @@ public class CartFragment extends Fragment {
 			            Snackbar snackbar = Snackbar.make(getView(), "Não foi possível enviar seu carrinho", Snackbar.LENGTH_LONG);
 			            snackbar.show();
 		            });
+        }
+        if(item.getTitle().equals("Histórico de Compras")) {
+	        ((MainActivity)getActivity()).navegarPara("store", HistoricoComprasFragment.class);
         }
         return super.onOptionsItemSelected(item);
     }

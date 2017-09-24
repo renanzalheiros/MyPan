@@ -1,6 +1,7 @@
 package zalho.com.br.mypan.model.entities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,10 +13,11 @@ public class BuyOrder implements Serializable {
 
     private String id;
     private List<OrderSku> orderSkuList;
-    private Login user;
+    private String userEmail;
+    private BigDecimal buyOrderPrice;
 
     public BuyOrder() {
-        this.orderSkuList = new ArrayList<OrderSku>();
+        this.orderSkuList = new ArrayList<>();
     }
 
 	public void setOrderProductList(List<OrderSku> orderProductList) {
@@ -30,7 +32,15 @@ public class BuyOrder implements Serializable {
         this.id = id;
     }
 
-    public void setUser(Login user) {
-        this.user = user;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
+
+	public BigDecimal getBuyOrderPrice() {
+		return buyOrderPrice;
+	}
+
+	public void setBuyOrderPrice(BigDecimal buyOrderPrice) {
+		this.buyOrderPrice = buyOrderPrice;
+	}
 }

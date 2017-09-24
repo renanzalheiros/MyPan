@@ -10,13 +10,10 @@ import java.util.UUID;
 
 public class OrderSku implements Serializable {
 
-	private String orderSkuId;
 	private Product product;
 	private int quantity;
-	private BigDecimal orderSkuPrice;
 
 	public OrderSku() {
-		this.orderSkuId = UUID.randomUUID().toString();
 	}
 
 	public OrderSku(Product product, int quantity) {
@@ -37,7 +34,6 @@ public class OrderSku implements Serializable {
 	}
 
 	public BigDecimal getOrderSkuPrice(){
-		this.orderSkuPrice = product.getPrice().multiply(BigDecimal.valueOf(quantity));
-		return orderSkuPrice;
+		return product.getPrice().multiply(BigDecimal.valueOf(quantity));
 	}
 }

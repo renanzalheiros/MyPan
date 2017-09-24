@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.databinding.Observable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -39,9 +40,8 @@ public class ProductsListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+
         viewModel = new ProductsListFragmentViewModel(getContext());
-
-
         FragmentProductsListBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_products_list, container, false);
         binding.setViewModel(viewModel);
 

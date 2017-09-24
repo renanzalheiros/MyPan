@@ -1,6 +1,5 @@
 package zalho.com.br.mypan.model.viewmodel;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.databinding.BaseObservable;
 import android.databinding.BindingAdapter;
@@ -9,18 +8,14 @@ import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.snappydb.SnappydbException;
 import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 
-import javax.inject.Inject;
-
 import zalho.com.br.mypan.events.OrderSkuEvent;
 import zalho.com.br.mypan.model.entities.OrderSku;
 import zalho.com.br.mypan.model.entities.Product;
-import zalho.com.br.mypan.model.manager.CartManager;
-import zalho.com.br.mypan.view.activities.MainActivity;
+import zalho.com.br.mypan.util.Constantes;
 import zalho.com.br.mypan.view.util.alert.DialogUtils;
 import zalho.com.br.mypan.view.util.dialogs.MyPanDialog;
 
@@ -37,7 +32,7 @@ public class ProductsListHolderViewModel extends BaseObservable {
     public ObservableField<String> productPrice = new ObservableField<>();
     public ObservableField<String> productImagePath = new ObservableField<>();
 
-    public ProductsListHolderViewModel(Product product, Context context) {
+    public ProductsListHolderViewModel(Product product) {
         this.product = product;
         this.productName.set(product.getName());
         this.productDescription.set(product.getDescription());
@@ -72,7 +67,7 @@ public class ProductsListHolderViewModel extends BaseObservable {
     }
 
     @BindingAdapter("productImage")
-    public static void bindProductImage(final ImageView imageView, String imagePath){
-        Picasso.with(imageView.getContext()).load("http://192.168.0.16:9090/mypan/img/products/" + imagePath).into(imageView);
+    public static void bindProductImage(final ImageView imageView, String imageName){
+        Picasso.with(imageView.getContext()).load(Constantes.LOCALHOST_BASE_URL + Constantes.LOCALHOST_UPLOAD_DIR + imageName).into(imageView);
     }
 }

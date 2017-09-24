@@ -14,7 +14,7 @@ public class Product implements Serializable {
     private String name;
     private String description;
     private BigDecimal price;
-    private String productImagePath;
+    private String file;
 
     public Product() {
     }
@@ -24,7 +24,7 @@ public class Product implements Serializable {
         this.name = name;
         this.description = description;
         this.price = price;
-        this.productImagePath = imagePath;
+        this.file = imagePath;
     }
 
     public String getId() {
@@ -60,11 +60,11 @@ public class Product implements Serializable {
     }
 
     public String getProductImagePath() {
-        return productImagePath;
+        return file;
     }
 
     public void setProductImagePath(String productImagePath) {
-        this.productImagePath = productImagePath;
+        this.file = productImagePath;
     }
 
     @Override

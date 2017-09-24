@@ -1,38 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <variable
-            name="viewModel"
-            type="zalho.com.br.mypan.model.viewmodel.CartFragmentViewModel" />
-    </data>
-    <android.support.constraint.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-        android:layout_height="match_parent">
+	<data>
 
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:itemsCarrinho="@{viewModel.carrinho}"
-            app:layout_constraintTop_toBottomOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-        </android.support.v7.widget.RecyclerView>
+		<variable
+			name="viewModel"
+			type="zalho.com.br.mypan.model.viewmodel.CartFragmentViewModel" />
+	</data>
 
+	<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
 
+		<RelativeLayout
+			android:id="@+id/lyt_total"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@color/totalbackgroud"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:text="Não há produtos"
-            app:isGone="@{!viewModel.emptyList}"
-            />
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:padding="10dp"
+				android:textColor="@android:color/black"
+				android:textSize="16sp"
+				android:text="Limpar carrinho"
+				android:onClick="@{viewModel::clearCart}" />
 
-    </android.support.constraint.ConstraintLayout>
+			<TextView
+				android:id="@+id/tf_total_cart"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentEnd="true"
+				android:layout_alignParentTop="true"
+				android:padding="10dp"
+				android:textColor="@android:color/black"
+				android:textSize="16sp"
+				android:text="@{viewModel.total}"
+				tools:text="TOTAL: R$339.98" />
+		</RelativeLayout>
+
+		<TextView
+			android:id="@+id/textView2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Não há produtos"
+			app:isGone="@{!viewModel.emptyList}"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent" />
+
+		<android.support.v7.widget.RecyclerView
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:layout_marginBottom="4dp"
+			android:layout_marginEnd="4dp"
+			android:layout_marginStart="4dp"
+			android:layout_marginTop="4dp"
+			app:itemsCarrinho="@{viewModel.carrinho}"
+			app:layout_constraintBottom_toTopOf="@+id/lyt_total"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent">
+
+		</android.support.v7.widget.RecyclerView>
+
+	</android.support.constraint.ConstraintLayout>
 
 </layout>

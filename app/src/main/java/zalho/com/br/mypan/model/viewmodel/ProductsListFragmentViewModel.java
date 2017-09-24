@@ -8,6 +8,7 @@ import android.databinding.ObservableBoolean;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -24,7 +25,7 @@ import zalho.com.br.mypan.view.adapter.ProductsListAdapter;
  * Created by andrepereira on 04/06/17.
  */
 
-public class ProductsListFragmentViewModel extends BaseObservable {
+public class ProductsListFragmentViewModel extends BaseObservable implements Serializable {
 
     public ObservableBoolean loadingListProgress = new ObservableBoolean(true);
     public ObservableBoolean emptyList = new ObservableBoolean(false);

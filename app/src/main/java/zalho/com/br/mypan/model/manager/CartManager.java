@@ -6,6 +6,7 @@ import android.util.Log;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,8 +83,9 @@ public class CartManager {
 
 		if(user != null){
 			BuyOrder buyOrder = new BuyOrder();
-			buyOrder.setUser(user);
+			buyOrder.setUserEmail(user.getEmail());
 			buyOrder.setOrderProductList(order);
+			buyOrder.setBuyOrderPrice(getBuyOrderPrice(order));
 			return service.makeNewOrder(buyOrder)
 					.subscribeOn(Schedulers.io())
 					.observeOn(AndroidSchedulers.mainThread())
@@ -92,6 +94,14 @@ public class CartManager {
 		} else {
 	    	throw new RuntimeException("Não foi possível enviar seu pedido");
 		}
+	}
+
+	public BigDecimal getBuyOrderPrice(List<OrderSku> order) {
+		BigDecimal cartTotal = new BigDecimal(0.0);
+		for (OrderSku sku : order) {
+			cartTotal = cartTotal.add(sku.getOrderSkuPrice());
+		}
+		return cartTotal;
 	}
 
 	public boolean clearCart() {
