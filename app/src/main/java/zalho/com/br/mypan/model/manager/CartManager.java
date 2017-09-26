@@ -23,6 +23,7 @@ import zalho.com.br.mypan.model.entities.OrderSku;
 import zalho.com.br.mypan.model.entities.Product;
 import zalho.com.br.mypan.service.CartService;
 import zalho.com.br.mypan.service.ServiceGenerate;
+import zalho.com.br.mypan.util.Constantes;
 
 /**
  * Created by andrepereira on 26/06/17.
@@ -86,6 +87,7 @@ public class CartManager {
 			buyOrder.setUserEmail(user.getEmail());
 			buyOrder.setOrderProductList(order);
 			buyOrder.setBuyOrderPrice(getBuyOrderPrice(order));
+			buyOrder.setOrderStatus(Constantes.AGUARDANDO_APROVACAO);
 			return service.makeNewOrder(buyOrder)
 					.subscribeOn(Schedulers.io())
 					.observeOn(AndroidSchedulers.mainThread())

@@ -33,16 +33,6 @@ public class CartFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-	@Override
-	public void onAttach(Context context) {
-		super.onAttach(context);
-	}
-
-	@Override
-	public void onDetach() {
-		super.onDetach();
-	}
-
 	@Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

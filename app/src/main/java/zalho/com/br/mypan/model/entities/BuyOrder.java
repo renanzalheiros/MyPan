@@ -15,6 +15,8 @@ public class BuyOrder implements Serializable {
     private List<OrderSku> orderSkuList;
     private String userEmail;
     private BigDecimal buyOrderPrice;
+    @OrderStatus
+    private String orderStatus;
 
     public BuyOrder() {
         this.orderSkuList = new ArrayList<>();
@@ -42,5 +44,14 @@ public class BuyOrder implements Serializable {
 
 	public void setBuyOrderPrice(BigDecimal buyOrderPrice) {
 		this.buyOrderPrice = buyOrderPrice;
+	}
+
+	@OrderStatus
+	public String getOrderStatus() {
+		return orderStatus;
+	}
+
+	public void setOrderStatus(@OrderStatus String orderStatus) {
+		this.orderStatus = orderStatus;
 	}
 }
