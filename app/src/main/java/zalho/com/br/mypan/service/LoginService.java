@@ -11,7 +11,7 @@ import zalho.com.br.mypan.model.entities.Login;
 
 public interface LoginService {
 
-	@POST("login/save")
+	@POST("login/save.json")
 	Observable<Login> saveNewUser(@Body Login login);
 
 }

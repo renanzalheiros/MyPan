@@ -6,6 +6,7 @@ import android.databinding.BindingAdapter;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -31,9 +32,12 @@ public class CartFragmentViewModel extends BaseObservable{
 
 	private CartManager manager;
 
+	private final Context context;
+
 	public CartFragmentViewModel(Context context){
 		this.manager = ((MainActivity)context).getCartManager();
 		EventBus.getDefault().register(this);
+		this.context = context;
 	}
 
 	public CartManager getManager() {
@@ -73,5 +77,6 @@ public class CartFragmentViewModel extends BaseObservable{
 	@Subscribe
 	public void atualizaTela(RefreshDisplayEvent event) {
 		onResume();
+		Snackbar.make(((MainActivity) context).getCurrentFocus(), event.getMessage(), Snackbar.LENGTH_LONG).show();
 	}
 }

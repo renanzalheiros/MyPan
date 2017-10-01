@@ -53,13 +53,17 @@ public class CartManager {
 	public void persistCart(OrderSkuEvent event) {
 		OrderSku sku = searchForProduct(event.getOrderSku().getProduct());
 		if (sku != null) {
-			sku.setQuantity(sku.getQuantity() + event.getOrderSku().getQuantity());
+			sku.setQuantity(event.getOrderSku().getQuantity());
+			if(sku.getQuantity() == 0) {
+				order.remove(sku);
+			}
+
 			cartDao.persistCart(order);
 		} else {
 			order.add(event.getOrderSku());
 			cartDao.persistCart(order);
 		}
-		EventBus.getDefault().post(new RefreshDisplayEvent());
+		EventBus.getDefault().post(new RefreshDisplayEvent("Alterado com sucesso"));
 	}
 
 	private OrderSku searchForProduct(Product product){

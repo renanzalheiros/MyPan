@@ -12,6 +12,6 @@ import zalho.com.br.mypan.model.entities.Product;
 
 public interface ProductService {
 
-    @GET("product")
+    @GET("product/all.json")
     Observable<List<Product>> getProductsList();
 }

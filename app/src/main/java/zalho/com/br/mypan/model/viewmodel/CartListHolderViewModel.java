@@ -1,14 +1,22 @@
 package zalho.com.br.mypan.model.viewmodel;
 
+import android.content.DialogInterface;
 import android.databinding.BindingAdapter;
 import android.databinding.ObservableField;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+import org.greenrobot.eventbus.EventBus;
+
+import zalho.com.br.mypan.events.OrderSkuEvent;
 import zalho.com.br.mypan.model.entities.OrderSku;
 import zalho.com.br.mypan.model.entities.Product;
+import zalho.com.br.mypan.view.activities.MainActivity;
+import zalho.com.br.mypan.view.util.alert.DialogUtils;
+import zalho.com.br.mypan.view.util.dialogs.MyPanDialog;
 
 /**
  * Created by andrepereira on 22/07/17.
@@ -52,7 +60,16 @@ public class CartListHolderViewModel {
 	}
 
 	public void alteraQuantidade(View view){
-		//TODO metodo que altera quantidade
+		final MyPanDialog myPanDialog = DialogUtils.createDialog(view.getContext(), "Quantidade de itens", "Digite a quantidade de itens desejada")
+				.withSingleLineEdit()
+				.withNegativeAction("Cancelar", (dialog, which) -> dialog.dismiss());
+		myPanDialog.withPositiveAction("Confirmar", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				EventBus.getDefault().post(new OrderSkuEvent(new OrderSku(orderSku.getProduct(), Integer.parseInt(myPanDialog.getTypedText()))));
+			}
+		});
+		myPanDialog.show();
 	}
 
 	public String total(View view){

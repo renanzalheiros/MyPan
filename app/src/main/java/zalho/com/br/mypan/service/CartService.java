@@ -11,6 +11,6 @@ import zalho.com.br.mypan.model.entities.BuyOrder;
 
 public interface CartService {
 
-	@POST("order/neworder")
+	@POST("order/neworder.json")
 	Observable<BuyOrder> makeNewOrder(@Body BuyOrder buyOrder);
 }

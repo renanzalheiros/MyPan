@@ -5,4 +5,14 @@ package zalho.com.br.mypan.events;
  */
 
 public class RefreshDisplayEvent {
+
+	private final String message;
+
+	public RefreshDisplayEvent(String message) {
+		this.message = message;
+	}
+
+	public String getMessage() {
+		return message;
+	}
 }
