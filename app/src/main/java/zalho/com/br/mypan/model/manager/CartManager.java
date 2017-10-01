@@ -55,9 +55,8 @@ public class CartManager {
 		if (sku != null) {
 			sku.setQuantity(event.getOrderSku().getQuantity());
 			if(sku.getQuantity() == 0) {
-				order.remove(sku);
+				removeProduct(sku);
 			}
-
 			cartDao.persistCart(order);
 		} else {
 			order.add(event.getOrderSku());
