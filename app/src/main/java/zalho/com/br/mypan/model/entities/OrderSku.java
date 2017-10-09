@@ -12,13 +12,17 @@ public class OrderSku implements Serializable {
 
 	private Product product;
 	private int quantity;
+	private BigDecimal price;
 
 	public OrderSku() {
+		this.price = new BigDecimal("0.0");
 	}
 
 	public OrderSku(Product product, int quantity) {
 		this.quantity = quantity;
 		this.product = product;
+		this.price = new BigDecimal("0.0");
+		refreshOrderSkuPrice();
 	}
 
 	public Product getProduct() {
@@ -31,9 +35,14 @@ public class OrderSku implements Serializable {
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+		refreshOrderSkuPrice();
 	}
 
 	public BigDecimal getOrderSkuPrice(){
-		return product.getPrice().multiply(BigDecimal.valueOf(quantity));
+		return this.price;
+	}
+
+	private void refreshOrderSkuPrice() {
+		this.price = new BigDecimal(String.valueOf(product.getPrice().multiply(BigDecimal.valueOf(quantity))));
 	}
 }

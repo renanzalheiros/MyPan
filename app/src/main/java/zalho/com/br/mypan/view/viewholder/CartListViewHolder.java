@@ -1,6 +1,5 @@
 package zalho.com.br.mypan.view.viewholder;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 
 import zalho.com.br.mypan.databinding.AdapterCartListRowBinding;

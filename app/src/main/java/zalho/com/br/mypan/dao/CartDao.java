@@ -5,7 +5,6 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.snappydb.DB;
 import com.snappydb.DBFactory;
-import com.snappydb.SnappyDB;
 import com.snappydb.SnappydbException;
 
 import java.util.ArrayList;

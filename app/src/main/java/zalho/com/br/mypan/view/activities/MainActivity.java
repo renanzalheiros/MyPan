@@ -2,7 +2,6 @@ package zalho.com.br.mypan.view.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 import zalho.com.br.mypan.R;

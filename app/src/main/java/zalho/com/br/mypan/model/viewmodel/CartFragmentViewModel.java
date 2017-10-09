@@ -77,6 +77,6 @@ public class CartFragmentViewModel extends BaseObservable{
 	@Subscribe
 	public void atualizaTela(RefreshDisplayEvent event) {
 		onResume();
-		Snackbar.make(((MainActivity) context).getCurrentFocus(), event.getMessage(), Snackbar.LENGTH_LONG).show();
+		Snackbar.make(((MainActivity) context).getCurrentFocus(), event.getMessage(), Snackbar.LENGTH_SHORT).show();
 	}
 }
